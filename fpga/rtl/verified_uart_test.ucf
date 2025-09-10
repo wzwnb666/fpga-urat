@@ -1,0 +1,25 @@
+# 基于正点原子设计的UART测试约束文件
+
+# 系统时钟 50MHz
+NET "sys_clk" LOC = N8 | IOSTANDARD = LVCMOS33;
+NET "sys_clk" TNM_NET = sys_clk;
+TIMESPEC TS_sys_clk = PERIOD "sys_clk" 20 ns HIGH 50%;
+
+# 复位按键
+NET "sys_rst_n" LOC = G16 | IOSTANDARD = LVCMOS33 | PULLUP;
+
+# # UART接口
+# NET "uart_txd" LOC = N11 | IOSTANDARD = LVCMOS33;  # UART_TXD
+# NET "uart_rxd" LOC = M12 | IOSTANDARD = LVCMOS33;  # UART_RXD
+NET "uart_txd" LOC = D8 | IOSTANDARD = LVCMOS33;  # UART_TXD
+NET "uart_rxd" LOC = E6 | IOSTANDARD = LVCMOS33;  # UART_RXD
+
+# LED输出
+NET "debug_led[0]" LOC = T5  | IOSTANDARD = LVCMOS33;  # LED0 - UART控制
+NET "debug_led[1]" LOC = M6  | IOSTANDARD = LVCMOS33;  # LED1 - UART控制
+NET "debug_led[2]" LOC = M7  | IOSTANDARD = LVCMOS33;  # LED2 - UART控制
+NET "debug_led[3]" LOC = T3  | IOSTANDARD = LVCMOS33;  # LED3 - 收发数据闪烁
+
+# 时序约束
+NET "uart_rxd" OFFSET = IN 5 ns BEFORE "sys_clk";
+NET "uart_txd" OFFSET = OUT 10 ns AFTER "sys_clk";
